@@ -1,7 +1,7 @@
 package com.gpch.login.service;
 
 import com.gpch.login.model.Role;
-import com.gpch.login.model.User;
+import com.gpch.login.model.Users;
 import com.gpch.login.repository.RoleRepository;
 import com.gpch.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,16 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User findUserByEmail(String email) {
+    public Users findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(1);
+    public Users saveUser(Users users) {
+        users.setPassword(bCryptPasswordEncoder.encode(users.getPassword()));
+        users.setActive(1);
         Role userRole = roleRepository.findByRole("ADMIN");
-        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
-        return userRepository.save(user);
+        users.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        return userRepository.save(users);
     }
 
 }
