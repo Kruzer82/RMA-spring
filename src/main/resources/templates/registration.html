@@ -39,6 +39,14 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-9">
+                        <label th:if="${#fields.hasErrors('initials')}" th:errors="*{initials}"
+                               class="validation-message"></label>
+                        <input type="text" th:field="*{initials}"
+                               placeholder="Initials" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9">
                         <input type="text" th:field="*{email}" placeholder="Email"
                                class="form-control"/> <label
                             th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
