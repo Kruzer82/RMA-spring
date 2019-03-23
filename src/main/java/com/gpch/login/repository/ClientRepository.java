@@ -2,12 +2,12 @@ package com.gpch.login.repository;
 
 import com.gpch.login.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
-import sun.jvm.hotspot.memory.LinearAllocBlock;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+@Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    public Client getClientById(long id);
+    Client getClientById(long id);
+    Client getById(int id);
+
 
 }

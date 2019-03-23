@@ -7,6 +7,8 @@ import com.gpch.login.model.Users;
 import com.gpch.login.repository.ClientRepository;
 import com.gpch.login.repository.RmaRepository;
 import com.gpch.login.repository.UserRepository;
+import com.gpch.login.service.ClientService;
+import com.gpch.login.service.ClientServiceImpl;
 import com.gpch.login.service.RmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,14 +22,25 @@ import java.util.List;
 public class RmaRestController {
 
 
-    @Autowired
+//    @Autowired
     private RmaService rmaService;
-    @Autowired
+//    @Autowired
+    private ClientService clientService;
+
+//    @Autowired
     private RmaRepository rmaRepository;
-    @Autowired
+//    @Autowired
     private ClientRepository clientRepository;
-    @Autowired
+//    @Autowired
     private UserRepository userRepository;
+@Autowired
+    public RmaRestController(RmaService rmaService, ClientService clientService, RmaRepository rmaRepository, ClientRepository clientRepository, UserRepository userRepository) {
+        this.rmaService = rmaService;
+        this.clientService = clientService;
+        this.rmaRepository = rmaRepository;
+        this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(path="/json/rma", method=RequestMethod.GET)
     public List<Rma> getAllRma(){
@@ -59,32 +72,41 @@ public class RmaRestController {
         String username = userDetails.getUsername();
         Users users = userRepository.findByInitials(initials);
         client.setUsers(users);
-        System.out.println("----------");
-        System.out.println(client);
-        System.out.println("----------");
         clientRepository.save(client);
-        return clientRepository.getClientById(client.getId());
+        return client;
     }
 
     @RequestMapping(value = "/json/client/{id}", method = RequestMethod.GET)
     public Client getClient(@PathVariable("id") long id, Authentication auth){
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String username = userDetails.getUsername();
-        Client clientfromdb = clientRepository.getClientById(id);
+        Client clientfromdb = null;
+        clientfromdb = clientRepository.getById((int) id);
         return clientfromdb;
     }
 
     @RequestMapping(value = "/json/client/{id}", method = RequestMethod.POST)
     public Client updClient(@PathVariable("id") long id, Authentication auth, @ModelAttribute("Client") Client client,@RequestParam(value = "initials") String initials){
+
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String username = userDetails.getUsername();
-        Client clientfromdb = clientRepository.getClientById(id);
+        Client clientfromdb = clientRepository.getById((int) id);
         Users users = userRepository.findByInitials(initials);
         client.setUsers(users);
         clientRepository.save(client);
-        return null;
+        return clientfromdb;
     }
 
+    public Client save(long id, Authentication auth, Client client,String initials){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        Client clientfromdb = clientRepository.getById((int) id);
+        Users users = userRepository.findByInitials(initials);
+        client.setUsers(users);
+        clientRepository.save(client);
+        return clientfromdb;
+
+    }
 
 
 }

@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Entity
 public class RmaItem {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy= GenerationType.AUTO)
         int id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "type_id", referencedColumnName = "id")

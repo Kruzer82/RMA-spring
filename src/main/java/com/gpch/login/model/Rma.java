@@ -11,7 +11,8 @@ import java.util.List;
 @Table(name = "rma")
 public class Rma {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy= GenerationType.AUTO)
         int id;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "id")
         List<RmaItem> rmaItems;
