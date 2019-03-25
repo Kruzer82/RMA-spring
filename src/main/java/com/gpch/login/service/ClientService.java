@@ -8,4 +8,6 @@ import java.util.List;
 public interface ClientService {
     public List<Client> getAllClient();
     public Client getClientById(long id);
+
+
 }

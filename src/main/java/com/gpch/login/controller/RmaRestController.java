@@ -1,10 +1,8 @@
 package com.gpch.login.controller;
 
-import com.gpch.login.model.Client;
-import com.gpch.login.model.Model;
-import com.gpch.login.model.Rma;
-import com.gpch.login.model.Users;
+import com.gpch.login.model.*;
 import com.gpch.login.repository.ClientRepository;
+import com.gpch.login.repository.RmaItemRepository;
 import com.gpch.login.repository.RmaRepository;
 import com.gpch.login.repository.UserRepository;
 import com.gpch.login.service.ClientService;
@@ -13,51 +11,68 @@ import com.gpch.login.service.RmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 @RestController
 public class RmaRestController {
 
-
-//    @Autowired
     private RmaService rmaService;
-//    @Autowired
     private ClientService clientService;
-
-//    @Autowired
     private RmaRepository rmaRepository;
-//    @Autowired
     private ClientRepository clientRepository;
-//    @Autowired
     private UserRepository userRepository;
-@Autowired
-    public RmaRestController(RmaService rmaService, ClientService clientService, RmaRepository rmaRepository, ClientRepository clientRepository, UserRepository userRepository) {
+    private RmaItemRepository rmaItemRepository;
+
+    @Autowired
+    public RmaRestController(RmaService rmaService, ClientService clientService, RmaRepository rmaRepository, ClientRepository clientRepository, UserRepository userRepository, RmaItemRepository rmaItemRepository) {
         this.rmaService = rmaService;
         this.clientService = clientService;
         this.rmaRepository = rmaRepository;
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
+        this.rmaItemRepository = rmaItemRepository;
+
     }
 
     @RequestMapping(path="/json/rma", method=RequestMethod.GET)
-    public List<Rma> getAllRma(){
+    public List<Rma> getAllRma(Model model){
+        model.addAttribute("client", new Client());
+        model.addAttribute("rmaItem", new RmaItem());
+        model.addAttribute("RmaItemRepository", rmaItemRepository);
         return rmaService.getAllRma();
     }
 
+
+    @RequestMapping(value = "/json/rma", method = RequestMethod.POST)
+    public Rma addRma(Authentication auth, @ModelAttribute("Rma") Rma rma, @ModelAttribute Client client) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+
+        rma.setClient(client);
+//        rma.setRmaItems(rmaItems);
+        rmaRepository.save(rma);
+        return rma;
+    }
+
     @RequestMapping(value = "/json/rma/{id}", method = RequestMethod.GET)
-    public Rma getRmaById(@PathVariable("id") long id){
-        return rmaService.getRmaById(id);
+    public Rma getRmaById(@PathVariable("id") long id)
+    {
+        return rmaRepository.findById(id);
     }
 
     @RequestMapping(value = "/json/rma/{id}", method = RequestMethod.POST)
-    public Rma updateRmaById(@PathVariable("id") long id, @ModelAttribute("Rma") Rma rma){
-        Rma rmafromdb = rmaService.getRmaById(id);
+    public Rma updateRmaById(Authentication auth, @PathVariable("id") long id, @ModelAttribute("Rma") Rma rma){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        Rma rmafromdb = rmaRepository.findById(id);
         rmafromdb = rma;
-        rmaRepository.save(rma);
-        return rma;
+        rmaRepository.save(rmafromdb);
+        return rmaRepository.findById(id);
     }
 
 
@@ -97,16 +112,6 @@ public class RmaRestController {
         return clientfromdb;
     }
 
-    public Client save(long id, Authentication auth, Client client,String initials){
-        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-        String username = userDetails.getUsername();
-        Client clientfromdb = clientRepository.getById((int) id);
-        Users users = userRepository.findByInitials(initials);
-        client.setUsers(users);
-        clientRepository.save(client);
-        return clientfromdb;
-
-    }
 
 
 }

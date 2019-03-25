@@ -20,7 +20,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClientById(long id) {
-        return clientRepository.getClientById(id);
+        return clientRepository.getById((int) id);
     }
 
 

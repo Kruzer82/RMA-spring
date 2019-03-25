@@ -22,4 +22,5 @@ public class RmaServiceImpl implements RmaService {
     public Rma getRmaById(long id) {
         return rmaRepository.findRmaById(id);
     }
+    
 }
