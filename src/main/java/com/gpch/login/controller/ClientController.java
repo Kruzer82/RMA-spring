@@ -14,28 +14,4 @@ import java.util.List;
 @RestController
 public class ClientController {
 
-    private ClientService clientService;
-
-    @Autowired
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
-    }
-
-    @GetMapping("/json/client")
-    public List<Client> getAllClient(){
-        return clientService.getAllClient();
-    }
-
-    @PostMapping("/json/client/add")
-    public Client addClient(Client client, @RequestParam("initials") Long initials){
-        return new Client();
-    }
-
-    @PutMapping("/json/client/add")
-    public Client putClient(Client client, @RequestParam("initials") Long initials){
-        return new Client();
-    }
-
-
-
 }
