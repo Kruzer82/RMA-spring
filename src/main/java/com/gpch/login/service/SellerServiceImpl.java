@@ -5,6 +5,8 @@ import com.gpch.login.repository.SellerRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,23 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller addNewSeller(Seller seller){
-        if(sellerRepository.existsByNameAndInitials(seller.getName(),seller.getInitials())) return sellerRepository.findByNameAndInitials(seller.getName(),seller.getInitials());
-        else
-        return sellerRepository.save(seller);
+        if((sellerRepository.findByInitials(seller.getId()) != null) || (sellerRepository.findByName(seller.getName()) != null)){
+            return seller;
+        }
+        else return sellerRepository.save(seller);
+
+//        if(sellerRepository.existsByNameAndInitials(seller.getName(),seller.getInitials())) return sellerRepository.findByNameAndInitials(seller.getName(),seller.getInitials());
+//        else
+//        return sellerRepository.save(seller);
+    }
+
+    @Override
+    public ResponseEntity<Seller> addNewSellerEnt(Seller seller) {
+        seller.setId(null);
+        if(
+                (sellerRepository.findByInitials(seller.getInitials()) != null) || (sellerRepository.findByName(seller.getName()) != null)){
+            return new ResponseEntity<Seller>(seller, HttpStatus.ALREADY_REPORTED);
+        }
+        else return new ResponseEntity<Seller>(sellerRepository.save(seller), HttpStatus.OK);
     }
 }

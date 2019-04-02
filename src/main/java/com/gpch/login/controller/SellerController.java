@@ -38,24 +38,28 @@ public class SellerController {
 
     @PostMapping("/json/seller")
     @ResponseBody
-    ResponseEntity<Seller> addSeller(@Valid @ModelAttribute Seller seller, BindingResult bindingResult){
-        Seller sellerExists = sellerRepository.findByName(seller.getName());
-        if (sellerExists != null) {
-            bindingResult
-                    .rejectValue("name", "error.users",
-                            "There is already a users registered with the email provided");
-        }
-        if (bindingResult.hasErrors()) {
-            System.out.println("-------------------------------------\nERROR");
-        } else {
-            return new ResponseEntity<>(
-                    sellerRepository.save(seller),
-                    HttpStatus.OK);
-        }
-        return new ResponseEntity<>(
-                seller,
-                HttpStatus.BAD_REQUEST);
-        //return seller;
+    ResponseEntity<Seller> addSeller(@Valid @ModelAttribute Seller seller){
+        return sellerService.addNewSellerEnt(seller);
+
+
+
+//        Seller sellerExists = sellerRepository.findByName(seller.getName());
+//        if (sellerExists != null) {
+//            bindingResult
+//                    .rejectValue("name", "error.users",
+//                            "There is already a users registered with the email provided");
+//        }
+//        if (bindingResult.hasErrors()) {
+//            System.out.println("-------------------------------------\nERROR");
+//        } else {
+//            return new ResponseEntity<>(
+//                    sellerRepository.save(seller),
+//                    HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(
+//                seller,
+//                HttpStatus.BAD_REQUEST);
+
     }
 
 }

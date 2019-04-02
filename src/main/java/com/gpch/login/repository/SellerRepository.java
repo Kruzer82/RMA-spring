@@ -8,10 +8,8 @@ import java.util.List;
 public interface SellerRepository extends JpaRepository<Seller,Long> {
     List<Seller> findAll();
     Seller findByInitials(String initials);
-    Seller findById(String Long);
     Boolean existsByNameAndInitials(String name,String initials);
-
     Seller findByNameAndInitials(String name, String initials);
-
     Seller findByName(String name);
+    Seller findByInitials(Long id);
 }
