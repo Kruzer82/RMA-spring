@@ -2,7 +2,7 @@ package com.gpch.login.controller;
 
 import javax.validation.Valid;
 
-import com.gpch.login.model.Users;
+import com.gpch.login.model.login.Users;
 import com.gpch.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

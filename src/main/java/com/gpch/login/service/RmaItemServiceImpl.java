@@ -1,6 +1,6 @@
 package com.gpch.login.service;
 
-import com.gpch.login.model.RmaItem;
+import com.gpch.login.model.rma.RmaItem;
 
 import java.util.List;
 

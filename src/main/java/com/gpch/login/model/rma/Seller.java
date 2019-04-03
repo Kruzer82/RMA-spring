@@ -1,18 +1,18 @@
-package com.gpch.login.model;
+package com.gpch.login.model.rma;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Data
 
-public class Seller {
+public class Seller implements Serializable {
     @Id
     @GeneratedValue
     private Long id;

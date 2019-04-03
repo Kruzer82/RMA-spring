@@ -1,6 +1,6 @@
 package com.gpch.login.service;
 
-import com.gpch.login.model.Client;
+import com.gpch.login.model.rma.Client;
 import com.gpch.login.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

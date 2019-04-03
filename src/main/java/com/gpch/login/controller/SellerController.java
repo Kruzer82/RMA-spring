@@ -1,24 +1,21 @@
 package com.gpch.login.controller;
 
-import com.gpch.login.model.Seller;
+import com.gpch.login.model.rma.Seller;
 import com.gpch.login.repository.SellerRepository;
 import com.gpch.login.service.SellerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.sql.ResultSet;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @SuppressWarnings("Duplicates")
@@ -31,18 +28,31 @@ public class SellerController {
     @Autowired
     protected SellerRepository sellerRepository;
 
+
     @GetMapping("/json/seller")
-    List<Seller> getAllSeller(){
+    @ResponseBody
+    ResponseEntity<List<Seller>> getAllSeller(){
         return sellerService.findAllSeller();
+    }
+
+    @GetMapping("/json/seller/{id}")
+    @ResponseBody
+    ResponseEntity<Optional<Seller>> getSellerById(@PathVariable("id") Long id){
+        return sellerService.findById(id);
+    }
+
+    @PutMapping("/json/seller/{id}")
+    @ResponseBody
+    ResponseEntity<Seller> updateSellerById(@PathVariable("id") Long id,@Valid @ModelAttribute Seller seller) {
+        return sellerService.updateSellerById(id,seller);
     }
 
     @PostMapping("/json/seller")
     @ResponseBody
-    ResponseEntity<Seller> addSeller(@Valid @ModelAttribute Seller seller){
+    ResponseEntity<Seller> addSeller(@Valid @ModelAttribute Seller seller, BindingResult bindingResult) {
+        System.out.println(bindingResult.getAllErrors());
         return sellerService.addNewSellerEnt(seller);
-
-
-
+    }
 //        Seller sellerExists = sellerRepository.findByName(seller.getName());
 //        if (sellerExists != null) {
 //            bindingResult
@@ -60,6 +70,5 @@ public class SellerController {
 //                seller,
 //                HttpStatus.BAD_REQUEST);
 
-    }
-
 }
+

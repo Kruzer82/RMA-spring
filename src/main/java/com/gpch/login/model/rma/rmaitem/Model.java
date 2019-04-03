@@ -1,9 +1,8 @@
-package com.gpch.login.model;
+package com.gpch.login.model.rma.rmaitem;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity

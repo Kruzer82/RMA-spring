@@ -1,6 +1,6 @@
 package com.gpch.login.repository;
 
-import com.gpch.login.model.RmaItem;
+import com.gpch.login.model.rma.RmaItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

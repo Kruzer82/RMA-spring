@@ -1,10 +1,8 @@
 package com.gpch.login.service;
 
-import com.gpch.login.model.Seller;
+import com.gpch.login.model.rma.Seller;
 import com.gpch.login.repository.SellerRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,30 +18,18 @@ public class SellerServiceImpl implements SellerService {
 
 
     @Override
-    public Optional<Seller> findSellerById(Long id) {
-        return sellerRepository.findById(id);
+    public ResponseEntity<Optional<Seller>> findById(Long id) {
+        return new ResponseEntity<>(sellerRepository.findById(id),HttpStatus.OK);
     }
 
     @Override
-    public Seller findSellerByInitials(String initials) {
-        return sellerRepository.findByInitials(initials);
+    public ResponseEntity<Seller> findByInitials(String initials) {
+        return new ResponseEntity<>(sellerRepository.findByInitials(initials), HttpStatus.OK);
     }
 
     @Override
-    public List<Seller> findAllSeller() {
-        return sellerRepository.findAll();
-    }
-
-    @Override
-    public Seller addNewSeller(Seller seller){
-        if((sellerRepository.findByInitials(seller.getId()) != null) || (sellerRepository.findByName(seller.getName()) != null)){
-            return seller;
-        }
-        else return sellerRepository.save(seller);
-
-//        if(sellerRepository.existsByNameAndInitials(seller.getName(),seller.getInitials())) return sellerRepository.findByNameAndInitials(seller.getName(),seller.getInitials());
-//        else
-//        return sellerRepository.save(seller);
+    public ResponseEntity<List<Seller>> findAllSeller() {
+        return new ResponseEntity<>(sellerRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
@@ -51,8 +37,24 @@ public class SellerServiceImpl implements SellerService {
         seller.setId(null);
         if(
                 (sellerRepository.findByInitials(seller.getInitials()) != null) || (sellerRepository.findByName(seller.getName()) != null)){
-            return new ResponseEntity<Seller>(seller, HttpStatus.ALREADY_REPORTED);
+            return new ResponseEntity<>(seller, HttpStatus.ALREADY_REPORTED);
         }
-        else return new ResponseEntity<Seller>(sellerRepository.save(seller), HttpStatus.OK);
+        else return new ResponseEntity<>(sellerRepository.save(seller), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Seller> updateSellerById(long id, Seller seller) {
+        Seller fromdb = null;
+        System.out.println("----sel----");
+        System.out.println(fromdb);
+        if(sellerRepository.findById(id) != null) {
+            fromdb = sellerRepository.findById(id);
+            System.out.println("----db ---");
+            System.out.println(fromdb);
+            fromdb.setInitials(seller.getInitials());
+            fromdb.setName(seller.getName());
+            return new ResponseEntity<>(sellerRepository.save(fromdb),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(fromdb,HttpStatus.BAD_REQUEST);
     }
 }

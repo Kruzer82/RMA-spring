@@ -1,6 +1,6 @@
 package com.gpch.login.service;
 
-import com.gpch.login.model.Users;
+import com.gpch.login.model.login.Users;
 import com.gpch.login.repository.RoleRepository;
 import com.gpch.login.repository.UserRepository;
 import org.junit.Before;

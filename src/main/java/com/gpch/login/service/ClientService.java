@@ -1,6 +1,6 @@
 package com.gpch.login.service;
 
-import com.gpch.login.model.Client;
+import com.gpch.login.model.rma.Client;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
