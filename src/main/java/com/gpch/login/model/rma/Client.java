@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
     String name;
     String person;
     @Pattern(regexp = "^[0-9]{9}$")

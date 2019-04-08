@@ -42,15 +42,12 @@ public class SellerServiceImpl implements SellerService {
         else return new ResponseEntity<>(sellerRepository.save(seller), HttpStatus.OK);
     }
 
+
     @Override
     public ResponseEntity<Seller> updateSellerById(long id, Seller seller) {
         Seller fromdb = null;
-        System.out.println("----sel----");
-        System.out.println(fromdb);
         if(sellerRepository.findById(id) != null) {
             fromdb = sellerRepository.findById(id);
-            System.out.println("----db ---");
-            System.out.println(fromdb);
             fromdb.setInitials(seller.getInitials());
             fromdb.setName(seller.getName());
             return new ResponseEntity<>(sellerRepository.save(fromdb),HttpStatus.OK);
