@@ -17,4 +17,5 @@ public interface ClientService {
     ResponseEntity<Client> getClientBySeller(Seller seller);
     ResponseEntity<Client> getClientByEmail(String email);
     ResponseEntity<Client> updateClientById(long id, Client client);
+    ResponseEntity<Client> save(Client client);
 }
