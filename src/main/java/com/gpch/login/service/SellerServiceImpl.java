@@ -12,15 +12,10 @@ import java.util.Optional;
 
 @Service
 public class SellerServiceImpl implements SellerService {
-
+    @Autowired
     private SellerRepository sellerRepository;
-
+    @Autowired
     private SellerService sellerService;
-
-    public SellerServiceImpl(SellerRepository sellerRepository, SellerService sellerService) {
-        this.sellerRepository = sellerRepository;
-        this.sellerService = sellerService;
-    }
 
     @Override
     public Seller findById(Long id) {
@@ -56,5 +51,10 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public Seller updateSeller(Seller currentSeller) {
         return sellerRepository.save(currentSeller);
+    }
+
+    @Override
+    public void deleteSellerById(long id) {
+        sellerRepository.deleteById(id);
     }
 }

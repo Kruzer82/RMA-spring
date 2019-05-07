@@ -11,4 +11,5 @@ public interface SellerRepository extends JpaRepository<Seller,Long> {
     Seller findByName(String name);
     Seller findById(long id);
     Boolean existsByNameOrInitials(String name, String initials);
+    void deleteById(long id);
 }

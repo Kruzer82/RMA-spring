@@ -13,8 +13,7 @@ public interface SellerService  {
     List<Seller> findAllSeller();
     Seller addNewSellerEnt(Seller seller);
     Seller updateSellerById(long id, Seller seller);
-
     boolean isSellerExist(Seller seller);
-
     Seller updateSeller(Seller currentSeller);
+    void deleteSellerById(long id);
 }

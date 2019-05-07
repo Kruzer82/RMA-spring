@@ -40,10 +40,8 @@ public class SellerController {
 
     @Autowired
     private SellerService sellerService;
-
     @Autowired
-    protected SellerRepository sellerRepository;
-
+    private SellerRepository sellerRepository;
 
     @GetMapping("/json/seller")
     @ResponseBody
@@ -70,18 +68,18 @@ public class SellerController {
 
     @PostMapping("/json/seller")
     @ResponseBody
-    ResponseEntity<Void> addSeller(@RequestBody Seller seller, UriComponentsBuilder ucBuilder) {
+    ResponseEntity<Void> addSeller(Seller seller, UriComponentsBuilder ucBuilder) {
 
         System.out.println("Creating User " + seller.getName());
         if (sellerService.isSellerExist(seller)) {
             System.out.println("A User with name " + seller.getName() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         sellerService.addNewSellerEnt(seller);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(seller.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping("/json/seller/{id}")
@@ -93,20 +91,48 @@ public class SellerController {
 
         if (currentSeller==null) {
             System.out.println("User with id " + id + " not found");
-            return new ResponseEntity<Seller>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         if (sellerService.isSellerExist(seller)) {
             System.out.println("User with name " + seller.getName() + " or initials" + seller.getInitials() + " already exist");
-            return new ResponseEntity<Seller>(HttpStatus.ALREADY_REPORTED);
+            return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
         }
 
         currentSeller.setName(seller.getName());
         currentSeller.setInitials(seller.getInitials());
 
         sellerService.updateSeller(currentSeller);
-        return new ResponseEntity<Seller>(currentSeller, HttpStatus.OK);
+        return new ResponseEntity<>(currentSeller, HttpStatus.OK);
     }
+
+    @DeleteMapping("/json/seller/{id}")
+    @ResponseBody
+    ResponseEntity<Seller> deleteSellerById(@PathVariable("id") Long id) {
+        System.out.println("Deleting User " + id);
+
+        Seller currentSeller = sellerService.findById(id);
+
+        if (currentSeller==null) {
+            System.out.println("User with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (sellerService.isSellerExist(currentSeller)) {
+            System.out.println("User Found with id " + currentSeller.getId() );
+            try{
+                sellerService.deleteSellerById(id);
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+            catch (Exception e){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
 //        Seller sellerExists = sellerRepository.findByName(seller.getName());
 //        if (sellerExists != null) {
 //            bindingResult
