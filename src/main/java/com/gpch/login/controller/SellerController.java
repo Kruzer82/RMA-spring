@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SellerController {
 
-    @Autowired
     private SellerService sellerService;
+    private SellerRepository sellerRepository;
 
-    @Autowired
-    protected SellerRepository sellerRepository;
-
+    public SellerController(SellerService sellerService, SellerRepository sellerRepository) {
+        this.sellerService = sellerService;
+        this.sellerRepository = sellerRepository;
+    }
 
     @GetMapping("/json/seller")
     @ResponseBody
@@ -53,6 +54,13 @@ public class SellerController {
         System.out.println(bindingResult.getAllErrors());
         return sellerService.addNewSellerEnt(seller);
     }
+
+    @DeleteMapping("/json/seller/{id}")
+    @ResponseBody
+    ResponseEntity<Optional<Seller>> delSellerById(@PathVariable("id") Long id){
+        return sellerService.deleteNewSellerEnt(id);
+    }
+
 //        Seller sellerExists = sellerRepository.findByName(seller.getName());
 //        if (sellerExists != null) {
 //            bindingResult

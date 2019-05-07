@@ -3,6 +3,7 @@ package com.gpch.login.service;
 import com.gpch.login.model.rma.Seller;
 import com.gpch.login.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,14 @@ import java.util.Optional;
 @Service
 public class SellerServiceImpl implements SellerService {
 
-    @Autowired
     private SellerRepository sellerRepository;
 
+    private SellerService sellerService;
+
+    public SellerServiceImpl(SellerRepository sellerRepository, SellerService sellerService) {
+        this.sellerRepository = sellerRepository;
+        this.sellerService = sellerService;
+    }
 
     @Override
     public ResponseEntity<Optional<Seller>> findById(Long id) {
@@ -54,4 +60,23 @@ public class SellerServiceImpl implements SellerService {
         }
         return new ResponseEntity<>(fromdb,HttpStatus.BAD_REQUEST);
     }
+
+    @Override
+    public ResponseEntity<Optional<Seller>> deleteNewSellerEnt(Long id) {
+        Seller seller = new Seller();
+        try {
+            sellerRepository.deleteById(id);
+            return new ResponseEntity<>(Optional.of(seller),HttpStatus.OK);
+        }
+        catch (EmptyResultDataAccessException e){
+            return new ResponseEntity<>(Optional.of(seller),HttpStatus.CONFLICT);
+        }
+    }
+
+//    @Override
+//    public ResponseEntity<Optional<Seller>> deleteNewSellerEnt(Long id) {
+//        Seller seller = new Seller();
+//
+//        return new ResponseEntity<>(sellerService.deleteNewSellerEnt(id),HttpStatus.OK);
+//    }
 }

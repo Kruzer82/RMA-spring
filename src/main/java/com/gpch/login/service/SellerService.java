@@ -13,4 +13,5 @@ public interface SellerService  {
     ResponseEntity<List<Seller>> findAllSeller();
     ResponseEntity<Seller> addNewSellerEnt(Seller seller);
     ResponseEntity<Seller> updateSellerById(long id, Seller seller);
+    ResponseEntity<Optional<Seller>> deleteNewSellerEnt(Long id);
 }

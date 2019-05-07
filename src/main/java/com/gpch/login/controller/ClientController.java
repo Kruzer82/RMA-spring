@@ -16,11 +16,13 @@ import java.util.Optional;
 
 @RestController
 public class ClientController {
-    @Autowired
     private ClientService clientService;
-
-    @Autowired
     private ClientRepository clientRepository;
+
+    public ClientController(ClientService clientService, ClientRepository clientRepository) {
+        this.clientService = clientService;
+        this.clientRepository = clientRepository;
+    }
 
     @GetMapping("/json/client")
     @ResponseBody
@@ -38,7 +40,7 @@ public class ClientController {
     @ResponseBody
     ResponseEntity<Client> updateClientById(@PathVariable("id") Long id,@Valid @ModelAttribute Client client) {
         return clientService.updateClientById(id,client);
-    }0
+    }
 
 
 }
