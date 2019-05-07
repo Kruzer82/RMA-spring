@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SellerService  {
-    ResponseEntity<Optional<Seller>> findById(Long id);
-    ResponseEntity<Seller> findByInitials(String initials);
-    ResponseEntity<List<Seller>> findAllSeller();
-    ResponseEntity<Seller> addNewSellerEnt(Seller seller);
-    ResponseEntity<Seller> updateSellerById(long id, Seller seller);
-    ResponseEntity<Optional<Seller>> deleteNewSellerEnt(Long id);
+    Seller findById(Long id);
+    Seller findByInitials(String initials);
+    List<Seller> findAllSeller();
+    Seller addNewSellerEnt(Seller seller);
+    Seller updateSellerById(long id, Seller seller);
+
+    boolean isSellerExist(Seller seller);
+
+    Seller updateSeller(Seller currentSeller);
 }

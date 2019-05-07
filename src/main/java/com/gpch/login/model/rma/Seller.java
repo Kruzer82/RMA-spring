@@ -6,13 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Data
 
-public class Seller implements Serializable {
+public class Seller {
     @Id
     @GeneratedValue
     private Long id;

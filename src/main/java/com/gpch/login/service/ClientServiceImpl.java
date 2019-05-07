@@ -65,4 +65,9 @@ public class ClientServiceImpl implements ClientService {
         }
         return new ResponseEntity<>(fromdb,HttpStatus.BAD_REQUEST);
     }
+
+    @Override
+    public ResponseEntity<Client> save(Client client) {
+        return new ResponseEntity<>(clientRepository.save(client),HttpStatus.OK);
+    }
 }

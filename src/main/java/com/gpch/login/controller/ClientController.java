@@ -5,6 +5,7 @@ import com.gpch.login.model.rma.Seller;
 import com.gpch.login.repository.ClientRepository;
 import com.gpch.login.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,11 @@ import java.util.Optional;
 
 @RestController
 public class ClientController {
+    @Autowired
     private ClientService clientService;
-    private ClientRepository clientRepository;
 
-    public ClientController(ClientService clientService, ClientRepository clientRepository) {
-        this.clientService = clientService;
-        this.clientRepository = clientRepository;
-    }
+    @Autowired
+    private ClientRepository clientRepository;
 
     @GetMapping("/json/client")
     @ResponseBody
@@ -40,6 +39,14 @@ public class ClientController {
     @ResponseBody
     ResponseEntity<Client> updateClientById(@PathVariable("id") Long id,@Valid @ModelAttribute Client client) {
         return clientService.updateClientById(id,client);
+    }
+
+    @GetMapping("/json/client/json")
+    ResponseEntity<Client> showjsonclient() {
+        Client client = new Client();
+        Seller seller = new Seller();
+        client.setSeller(seller);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
 
